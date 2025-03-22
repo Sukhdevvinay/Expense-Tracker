@@ -1,0 +1,147 @@
+<!DOCTYPE html>
+<html lang="en">
+
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Document</title>
+    <link rel="stylesheet" href="/styles/home.css">
+    <script>
+        let dropdown_item = [];
+        function addItem() {
+            const input = document.getElementById('itemInput').value;
+            if (input.trim() !== "") {
+                const option = document.createElement('option');
+                option.text = input;
+                option.value = input;
+                option.name = input;
+                dropdown_item.push(input);
+                const dropdown = document.getElementById('groceryDropdown');
+                dropdown.add(option);
+                let detail = document.getElementById("itemInput").value;
+                if (detail != "") {
+                    let b = `<div class="item">
+                    <span>${detail}</span>
+                    <span class="delete-icon" onclick="deleteElement(this)">✖</span>
+                </div>`
+                    document.querySelector(".categries").innerHTML = document.querySelector(".categries").innerHTML + b;
+                    document.getElementById("itemInput").value = "";
+                }
+            } else {
+                alert("Please enter a Entry item.");
+            }
+        }
+        function deleteElement(element) {
+            const dropdown = document.getElementById('groceryDropdown');
+            console.log(element);
+            const item = element.parentElement;
+            console.log(item);
+            let d = item.childNodes[1].innerHTML;
+            console.log(d);
+            for (let i = 0; i < dropdown_item.length; i++) {
+                if (dropdown_item[i] == d) {
+                    dropdown_item.splice(i, 1);
+                    dropdown.remove(i + 1);
+                }
+            }
+            item.parentNode.removeChild(item);
+            console.log("Array :", dropdown_item);
+        }
+        function saveCode() {
+            var messageDiv = document.getElementById("message");
+            messageDiv.style.display = "block";
+            setTimeout(function () {
+                messageDiv.style.display = "none";
+            }, 2100);
+        }
+    </script>
+</head>
+
+<body>
+    <nav>
+        <a href="/expense">Expense Tracker</a>
+        <a href="/view_expanse">View Expenses</a>
+        <a href="/logout">Logout</a>
+    </nav>
+    <div class="content">
+        <div class="data" id="userinfo">
+            <div id="user">User Info</div>
+            <img src="/images/user.png" alt="404"><br>
+            <span id="name">
+                <%= username %>
+            </span><br>
+            <div class="expense_data">
+                <span class="design" id="w1">User since</span>
+                <span class="design" id="w2">Expenses logged</span>
+                <span class="design" id="w3">Last Login</span>
+            </div>
+            <div class="expense_data">
+                <span class="design2" id="w1">
+                    <%= date %>
+                </span>
+                <span class="design2" id="w4"><%= No_expense %></span>
+                <span class="design2" id="w5">
+                    <%= login_date %>
+                </span>
+            </div>
+        </div>
+        <div class="data" id="expence_catogry">
+            <div id="user">Expense Categories</div>
+            <p>Add/Remove Expense Categories Below</p>
+            <p id="add">Add category...</p>
+            <div class="categries">
+                <!-- <div class="item">
+                    <span>Grocery</span>
+                    <span class="delete-icon" onclick="deleteElement(this)">✖</span>
+                </div> -->
+            </div>
+            <!-- <input type="text" id = "itemInput"> -->
+            <input type="text" id="itemInput">
+            <input type="submit" value="Save" id="saves" onclick="addItem()">
+        </div>
+        <div class="data" id="expence">
+            <div id="user">Enter Expense</div>
+            <p>Enter required fields to save a new expense</p>
+            <form action="/save" method="post">
+                <div class="expense_cat">
+                    <div>
+                        <input type="text" placeholder="Expense name" name="Expense_name">
+                    </div>
+                    <div class="right">
+                        <input type="number" placeholder="Amount" name="Amount">
+                    </div>
+                </div>
+                <div class="expense_cat">
+                    <!-- <div class="date-input" >
+                        <input type="date" placeholder="Expense date" name="Expense_date">
+                    </div> -->
+                    <div class="date-input">
+                        <input type="date" placeholder="Expense date" name="Expense_date">
+                    </div>
+                    <div class="right">
+                        <!-- <input type="text" placeholder="Expense category" name = "Expense_category"> -->
+                        <select id="groceryDropdown" name="Expense_category">
+                            <option value="" disabled selected name="">Select an item</option>
+                        </select>
+                    </div>
+                </div>
+                <div class="expense_cat">
+                    <div>
+                        <select id="payment_types" name="Payment_type">
+                            <option value="" disabled selected>Payment Type</option>
+                            <option value="credit">Credit</option>
+                            <option value="debit">Debit</option>
+                            <option value="cash">Cash</option>
+                        </select>
+                    </div>
+                </div>
+                <input type="text" placeholder="Comments" id="comment"><br>
+                <input type="submit" value="Save" id="save" onclick="saveCode()">
+            </form>
+            <div id="message" style="display:none;">Data is saved!</div>
+        </div>
+        <!--  -->
+    </div>
+    </body>
+
+</html>

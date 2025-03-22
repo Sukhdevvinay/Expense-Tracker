@@ -1,0 +1,142 @@
+* {
+    margin: 0px;
+    padding: 0px;
+    /* box-sizing: border-box; */
+}
+body {
+    background-color: rgb(0, 0, 44);
+    /* font-family: Arial, Helvetica, sans-serif; */
+    color: #4bd594;
+}
+nav {
+    border: soliid rgb(34,26,46) 1px;
+    background-color: rgb(0 0 77);
+    height:35px;
+    padding-top:14px;
+    margin-bottom: 85px;
+}
+nav a {
+    text-decoration: none;
+    color: yellow;
+    font-size: 20px;
+    margin: 10px;
+    margin-left: 25px;
+}
+.box {
+      background-color: rgb(3 34 65);
+      height: 420px;
+      width: 100%;
+      margin-top: 25px;
+}
+.container {
+    display: flex;
+    justify-content: space-around;
+    align-items: center;
+    margin-bottom: 43px;
+    margin-top: -33px;
+}
+.card {
+      width: 290px;
+      height: 150px;
+      border: 1px solid rgb(3 34 65);
+      background-color: rgb(3,34,65);
+      padding: 20px;
+      text-align: center;
+      box-shadow: 0px 0px 10px rgba(0, 0, 0, 0.1);
+}
+.icon {
+    font-size: 50px;
+    margin-bottom: 15px;
+}
+.text {
+    font-size: 30px;
+    font-weight: bold;
+    margin-top: 13px;
+    margin-bottom: 14px;
+}
+.subtitle {
+    font-size: 12px;
+    color: #87c11a;
+}
+.dollar-sign {
+    font-size: 50px;
+    color: green;
+}
+table {
+        width: 80%;
+        border-collapse: collapse;
+        margin-bottom: 20px;
+}     
+th, td {
+        padding: 15px;
+        text-align: left;
+        border-bottom: 1px solid rgb(0 0 44);
+}
+th {
+        background-color: rgb(0 0 44);
+        color: #d8f0a0;
+}
+h2 {
+    border: aliceblue;
+    margin-bottom: 15px;
+    color: #a8b141;
+    display: -webkit-box;
+    margin-left: 140px;
+    font-size: 30px;
+}
+#second {
+    padding-top: 20px;
+}
+p {
+    margin-bottom: 10px;
+    font-size: 12px;
+    color: #38ae32;
+    margin-left: 140px;
+    display: -webkit-box;
+}
+
+#piechart {
+    margin-left: 40px;
+    background-color: rgb(3,34,65);
+}
+#chart_div {
+    margin-left: 700px;
+    margin-top: -490px;
+    background-color: rgb(3,34,65);
+  }
+.graphs {
+    display: flex;
+}
+#expenseChart {
+    margin-left: 48px;
+    color: #38ae32;
+    border: solid rgb(3 34 65) 10px;
+    margin-top: -13px;
+}
+.main {
+    border: solid rgb(0 0 44) 2px;
+}
+canvas#myChart {
+    border: solid rgb(3 34 65) 10px;
+    margin-top: -9px;
+    margin-left: 86px;
+}
+.bottom{
+    position: absolute;
+    right: 139px;
+    font-size: 1.3em;
+    color: #ffba75;
+    margin-top: -10px;
+}
+button {
+    background-color: rgb(0 0 44);
+    border-color: rgb(0 0 44 / 0%);
+    outline: none;
+    color: #d8f0a0;
+    height: 21px;
+    width: 33px;
+    font-size: 18px;
+}
+button:hover {
+    background-color: #b6cdc2;
+}

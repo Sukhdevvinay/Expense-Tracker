@@ -1,0 +1,238 @@
+<!DOCTYPE html>
+<html>
+
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>Document</title>
+  <link rel="stylesheet" href="/styles/expense.css">
+  <script src="https://cdn.jsdelivr.net/npm/chart.js"></script>
+</head>
+
+<body>
+  <nav>
+    <a href="/expense">Expance Tracker</a>
+    <a href="">View Expances</a>
+    <a href="/logout">Logout</a>
+  </nav>
+  <div class="container">
+    <div class="card">
+      <i class="icon">🗓️</i>
+      <div class="text"><%= first_date %></div>
+      <div class="subtitle">First Expense Date</div>
+    </div>
+    <div class="card">
+      <i class="icon">🗓️</i>
+      <div class="text"><%= latest_date %></div>
+      <div class="subtitle">Latest Expense Date</div>
+    </div>
+    <div class="card">
+      <i class="icon">🧾</i>
+      <div class="text"><%= No_expense %></div>
+      <div class="subtitle">Number of Expenses</div>
+    </div>
+    <div class="card">
+      <i class="dollar-sign">$</i>
+      <div class="text"><%= total_expenditure %></div>
+      <div class="subtitle">Total Amount</div>
+    </div>
+  </div>
+  <div class = "graphs">
+    <div style="width: 640px; height: 466px;">
+      <canvas id="expenseChart"></canvas>
+    </div>
+    <div style="width: 640px; height: 450px;">
+      <canvas id="myChart"></canvas>
+  </div>
+</div>
+<div style="width: 90%; height: 400px; margin-left: 54px;">
+  <canvas id="myFullWidthChart"></canvas>
+</div>
+
+<script src="/scripts/chart-script.js"></script> <!-- Load your custom script -->
+
+<script>
+    const chartData = <%- chartData %>; // Pass the chart data from the server
+    const expenses = <%- Expenses %>;
+    const exp_list = <%- exp_list %>;
+    let No_page = Math.ceil(exp_list.length / 5);
+    let ans = [];
+    exp_list.reverse();
+    let s = exp_list.length;
+    for(let i = 1; i <= No_page; i++) {
+      let k = [];
+      if(s >= 5) {
+        for(let j = (i-1)*5; j < ((i-1)*5)+5; j++) {
+          k.push(exp_list[j]);
+        } 
+        s = s-5;   
+        ans.push(k);  
+      } else {
+        for(let j = (i-1)*5; j < ((i-1)*5)+s; j++) {
+            k.push(exp_list[j]);
+        }
+        ans.push(k);
+      } 
+    }
+    // ans.reverse();
+    let count = 1;
+    console.log("B LR : ",count);
+    function right() {
+      console.log("Right");
+      if(document.getElementById("right").disabled == false) {
+        if(count >= 1) {
+         document.querySelector("tbody").innerHTML = "";
+           for(let i = 0; i < ans[count].length; i++) {
+               document.querySelector("tbody").innerHTML = document.querySelector("tbody").innerHTML + `
+                   <tr class = "main">
+                   <td> ${ans[count][i].Expense_name}</td>
+                   <td> ${ans[count][i].Amount} </td>
+                   <td> ${ans[count][i].Expense_date} </td>
+                   <td> ${ans[count][i].Expense_category} </td>
+                   <td> ${ans[count][i].Payment_type} </td>
+                   <td></td>
+                   </tr>`;
+                 }
+                 count++;
+                 console.log("Right : ",count);
+                 document.querySelector("span").innerHTML = "";
+                 document.querySelector("span").innerHTML = `${count} of ${No_page}`;
+               } else {
+                 console.log("Else Right : ",count);
+               }
+      }
+      check();
+    }
+
+    function left() {
+      check();
+      if(document.getElementById("left").disabled == false) {
+        count = count - 1; // 2-1=1
+        console.log("left : ",count); // 1
+          if(count <= No_page) { // 1 <= 2
+            document.querySelector("tbody").innerHTML = "";
+          for(let i = 0; i < ans[count-1].length; i++) { // ans[1-1]=ans[0].lenght = x -1
+              document.querySelector("tbody").innerHTML = document.querySelector("tbody").innerHTML + `
+                  <tr class = "main">
+                  <td> ${ans[count-1][i].Expense_name}</td>
+                  <td> ${ans[count-1][i].Amount} </td>
+                  <td> ${ans[count-1][i].Expense_date} </td>
+                  <td> ${ans[count-1][i].Expense_category} </td>
+                  <td> ${ans[count-1][i].Payment_type} </td>
+                  <td></td>
+                  </tr>`;
+                }
+                document.querySelector("span").innerHTML = "";
+                document.querySelector("span").innerHTML = `${count} of ${No_page}`;
+          }
+      }
+        check();
+    }
+    function check() {
+      if(count == No_page) { // Disabked right
+        let a = document.getElementById("right");
+        let b = document.getElementById("left");
+        if(a!=null || b!= null) {
+          a.disabled = true;
+          document.getElementById("right").style.color = "grey"
+          b.disabled = false;
+          document.getElementById("left").style.color = "#d8f0a0";
+        }
+      } else if(count == 1) { // Disabled left
+        let a = document.getElementById("left");
+        let b = document.getElementById("right");
+        if(a!=null || b!= null) {
+          a.disabled = true;
+          document.getElementById("left").style.color = "grey"
+          b.disabled = false;
+          document.getElementById("right").style.color = "#d8f0a0";
+        }
+      }
+    }
+</script>
+
+<center>
+  <div class="box" id="second">
+    <h2>Detail summary</h2>
+    <p>Click on row to edit expense</p>
+    <table>
+      <thead>
+        <tr>
+          <th>Name</th>
+          <th>Amount</th>
+          <th>Date</th>
+          <th>Category</th>
+          <th>Type</th>
+          <th>Comments</th>
+        </tr>
+      </thead>
+      <tbody>
+      <% exp.reverse() %>
+      <% if(exp.length == 1) { %>
+        <% exp.forEach(function(val){ %>
+          <tr class = "main">
+            <td><%= val.Expense_name %></td>
+            <td><%= val.Amount %></td>
+            <td><%= val.Expense_date %></td>
+            <td><%= val.Expense_category %></td>
+            <td><%= val.Payment_type %></td>
+            <td></td>
+          </tr>
+        <% }) %>
+      <% } else if(exp.length == 2) { %>
+        <% exp.forEach(function(val){ %>
+          <tr class = "main">
+            <td><%= val.Expense_name %></td>
+            <td><%= val.Amount %></td>
+            <td><%= val.Expense_date %></td>
+            <td><%= val.Expense_category %></td>
+            <td><%= val.Payment_type %></td>
+            <td></td>
+          </tr>
+        <% }) %>
+      <% } else if(exp.length == 3) { %>
+        <% exp.forEach(function(val){ %>
+          <tr class = "main">
+            <td><%= val.Expense_name %></td>
+            <td><%= val.Amount %></td>
+            <td><%= val.Expense_date %></td>
+            <td><%= val.Expense_category %></td>
+            <td><%= val.Payment_type %></td>
+            <td></td>
+          </tr>
+        <% }) %>
+      <% } else if(exp.length == 4) { %>
+        <% exp.forEach(function(val) { %>
+          <tr class = "main">
+            <td><%= val.Expense_name %></td>
+            <td><%= val.Amount %></td>
+            <td><%= val.Expense_date %></td>
+            <td><%= val.Expense_category %></td>
+            <td><%= val.Payment_type %></td>
+            <td></td>
+          </tr>
+        <% }) %>
+      <% } else { %>  <!-- length >= 5-->
+          <% for(let i = 0; i < 5; i++) { %>
+            <tr class = "main">
+              <td><%= exp[i].Expense_name %></td>
+              <td><%= exp[i].Amount %></td>
+              <td><%= exp[i].Expense_date %></td>
+              <td><%= exp[i].Expense_category %></td>
+              <td><%= exp[i].Payment_type %></td>
+              <td></td>
+            </tr>
+          <% } %>
+      <% } %>
+      </tbody>
+    </table>
+    <div class="bottom">
+      <span>1 of <%= Math.ceil(exp.length / 5) %></span>
+      <button id = "left" onclick="left()">&lt;</button>
+      <button id = "right" onclick= "right()">&gt;</button>
+    </div>
+</div>
+</center>
+</body>
+
+</html>
